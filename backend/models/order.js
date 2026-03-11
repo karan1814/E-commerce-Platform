@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema(
             required: true,
         },
 
-        textPrice: {
+        taxPrice: {
             type: Number,
             required: true
         },
