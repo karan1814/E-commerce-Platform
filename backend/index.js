@@ -11,6 +11,8 @@ const uploadRoutes = require("./routes/uploadRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+
 dotenv.config();
 connectDB();
 const app = express();
@@ -32,6 +34,9 @@ app.use("/api/products", productRoutes);
 app.use("/api/upload",uploadRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT =process.env.PORT || 5000;
 

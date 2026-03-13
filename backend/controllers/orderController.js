@@ -81,4 +81,32 @@ const updateOrderToPaid = async (req, res)=>{
     }
 };
 
-module.exports = { addOrderItems , getMyOrders , getOrderById, updateOrderToPaid};
+const getOrder = async (req, res)=>{
+    try{
+        const orders = await Order.find({}).populate("user", "id name email");
+        res.json(orders);
+    }catch(error){
+        res.status(500).json({ message: error.message});
+    }
+};
+
+const updateOrderToDelivered = async (req, res) =>{
+    try{
+        const order = await Order.findById(req.params.id);
+
+        if(order){
+            order.isDelivered = true;
+            order.deliveredAt = Date.now();
+
+            const updateOrder = await order.save();
+
+            res.json(updateOrder);
+        }else{
+            res.status(404).json({ message: "Order not found" });
+        }
+    }catch(error){
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { addOrderItems , getMyOrders , getOrderById, updateOrderToPaid , getOrder, updateOrderToDelivered};
